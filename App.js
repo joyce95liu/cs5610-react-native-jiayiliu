@@ -10,6 +10,12 @@ import TrueFalseQuestionEditor from './elements/TrueFalseQuestionEditor'
 import { createStackNavigator } from 'react-navigation'
 import {Button} from 'react-native-elements'
 import ScreenX from './elements/ScreenX'
+import CourseList from './components/CourseList'
+import ModuleList from './components/ModuleList'
+import LessonList from './components/LessonList'
+import WidgetList from './components/WidgetList'
+import QuestionList from './components/QuestionList'
+
 
 class Home extends React.Component {
     static navigationOptions={
@@ -28,6 +34,10 @@ class Home extends React.Component {
                 <StatusBar barStyle="light-content"/>
                 <FixedHeader/>
 
+                <Button title="Courses"
+                        onPress={() => this.props.navigation
+                            .navigate('CourseList') } />
+
                 <Button title="Go to Screen X"
                         onPress={() => this.props.navigation
                             .navigate('ScreenX',{'parameter':'some value'})}/>
@@ -38,9 +48,10 @@ class Home extends React.Component {
                         onPress={() => this.props.navigation
                             .navigate('ScreenA')}/>
 
-                <TrueFalseQuestionEditor/>
+
+                {/*<TrueFalseQuestionEditor/>*/}
                 <QuestionTypeButtonChooser/>
-                <QuestionTypePicker/>
+                {/*<QuestionTypePicker/>*/}
                 <Exam/>
                 <Icons/>
                 <View style={{padding: 20}}>
@@ -94,9 +105,15 @@ class ScreenB extends React.Component {
 
 const App = createStackNavigator({
     Home,
+    CourseList,
+    ModuleList,
+    LessonList,
+    WidgetList,
+    QuestionList,
     ScreenA,
     ScreenB,
-    ScreenX
+    ScreenX,
+    TrueFalseQuestionEditor
 });
 
 export default App;
