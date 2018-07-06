@@ -1,10 +1,10 @@
 import React from 'react'
-import {View, ScrollView, StyleSheet} from 'react-native'
-import { Button,Text,FormLabel,FormValidationMessage,FormInput,CheckBox} from 'react-native-elements'
+import {View,TextInput, ScrollView, StyleSheet} from 'react-native'
+import { Button,Text,FormLabel,FormValidationMessage,FormInput,CheckBox,ListItem} from 'react-native-elements'
 import QuestionServiceClient from "../services/QuestionServiceClient";
 
-class TrueFalseQuestionEditor extends React.Component{
-    static navigationOptions = {title: 'TrueFaleEditor'}
+class EssayQuestionWidget extends React.Component{
+    static navigationOptions = {title: 'EssayQuestionEditor'}
     constructor(props){
         super(props)
 
@@ -14,32 +14,30 @@ class TrueFalseQuestionEditor extends React.Component{
             title:'',
             description:'',
             instructions:'',
-            points:'',
-            isTrue:true,
+            points:0,
+            text:'',
             question:'',
             questionId:0,
             previewMode:true,
             examId:0
         }
 
-        // this.updateForm = this.updateForm.bind(this);
         this.saveForm = this.saveForm.bind(this);
-
     }
 
     componentDidMount() {
         const {navigation} = this.props;
         const questionId = navigation.getParam("questionId")
         const question=navigation.getParam("question")
-        const examId = navigation.getParam("examId")
+        const examId=navigation.getParam("examId")
 
         this.setState({title:question.title})
         this.setState({instructions:question.instructions})
         this.setState({description:question.description})
-        this.setState({isTrue:question.isTrue})
+        this.setState({text:question.text})
         this.setState({questionId:questionId})
-        this.setState({points:question.points})
         this.setState({examId:examId})
+        this.setState({points:question.points})
     }
 
 
@@ -53,9 +51,9 @@ class TrueFalseQuestionEditor extends React.Component{
             'description':this.state.description,
             'instructions':this.state.instructions,
             'points':this.state.points,
-            'isTrue':this.state.isTrue,
+            'text':this.state.text
         }
-        this.QuestionServiceClient.saveTrueOrFalseQuestion(this.state.questionId,question)
+        this.QuestionServiceClient.saveEssayQuestion(this.state.questionId,question)
             .then(()=>this.props.navigation.state.params.refresh(this.state.examId))
             .then(()=>this.props.navigation.goBack())
     }
@@ -64,30 +62,27 @@ class TrueFalseQuestionEditor extends React.Component{
         this.setState({previewMode:!this.state.previewMode})
     }
 
+
     render(){
-          // const questionId = this.props.navigation.getParam("questionId")
-          // const question = this.props.navigation.getParam("question")
+
         return(
 
             <ScrollView>
 
-            <Text h3>Eidtor</Text>
-                <FormLabel>Title</FormLabel>
+                <Text h3>Eidtor</Text>
 
+                <FormLabel>Title</FormLabel>
                 <FormInput
-                     onChangeText={
-                     text => this.updateForm({title: text}) }>
-                     {this.state.title}
+                    onChangeText={
+                        text => this.updateForm({title: text}) }>
+                    {this.state.title}
                 </FormInput>
-                <FormValidationMessage>
-                    Title is required
-                </FormValidationMessage>
 
                 <FormLabel>Description</FormLabel>
                 <FormInput
-                onChangeText={
-                text => this.updateForm({description: text}) }>
-                         {this.state.description}
+                    onChangeText={
+                        text => this.updateForm({description: text}) }>
+                    {this.state.description}
                 </FormInput>
 
                 <FormLabel>Instruction</FormLabel>
@@ -104,10 +99,6 @@ class TrueFalseQuestionEditor extends React.Component{
                     {this.state.points}
                 </FormInput>
 
-                {/*<CheckBox onPress={()=>this.updateForm({isTrue:!this.state.isTrue})}*/}
-                          {/*checked={this.state.isTrue} title='The answer is true'/>*/}
-
-                <Text>  </Text>
                 <Button onPress={()=>this.preview()}
                         title="preiew"
                         buttonStyle={{width:100,height:40}}/>
@@ -122,11 +113,13 @@ class TrueFalseQuestionEditor extends React.Component{
                     </View>
                     <Text h5>{this.state.description}</Text>
                     <Text h5>{this.state.instructions}</Text>
-                    {/*<CheckBox*/}
-                        {/*checked={this.state.isTrue} title='The answer is true'/>*/}
-                    <CheckBox onPress={()=>this.updateForm({isTrue:!this.state.isTrue})}
-                              checked={this.state.isTrue} title='The answer is true'/>
-
+                    <View style={styles.textContainer}>
+                    <TextInput
+                               onChangeText={
+                                   text => this.updateForm({text: text}) }>
+                        {this.state.text}
+                    </TextInput>
+                    </View>
 
                     <Button    backgroundColor="green"
                                color="white"
@@ -141,29 +134,28 @@ class TrueFalseQuestionEditor extends React.Component{
 
                 </ScrollView>}
 
-            </ScrollView >
-
-
+            </ScrollView>
         )
     }
 }
-export default TrueFalseQuestionEditor
+export default EssayQuestionWidget
 
 const styles=StyleSheet.create({
     textContainerarea:{
-        // flexDirection : 'row',
         width:window.width,
         margin: 10,
         padding:5,
-        borderWidth:1
-
     },
     scorearea:{
         flexDirection : 'row',
         width: window.width,
-        // margin: 10,
-        // padding:5,
         justifyContent: 'space-between',
-        //borderWidth:1
+    },
+
+    textContainer:{
+        height : 200,
+        borderWidth:1,
+        justifyContent: 'flex-start',
+
     }
 })

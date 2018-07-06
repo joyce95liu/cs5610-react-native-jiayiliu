@@ -1,10 +1,10 @@
 import React from 'react'
-import {View, ScrollView, StyleSheet} from 'react-native'
-import { Button,Text,FormLabel,FormValidationMessage,FormInput,CheckBox} from 'react-native-elements'
+import {StyleSheet, View,ScrollView,TextInput} from 'react-native'
+import { Button,Text,FormLabel,FormValidationMessage,FormInput,CheckBox,ListItem} from 'react-native-elements'
 import QuestionServiceClient from "../services/QuestionServiceClient";
 
-class TrueFalseQuestionEditor extends React.Component{
-    static navigationOptions = {title: 'TrueFaleEditor'}
+class FillInBlankQuestionWidget extends React.Component{
+    static navigationOptions = {title: 'FillInBlankQuestionEditor'}
     constructor(props){
         super(props)
 
@@ -14,30 +14,29 @@ class TrueFalseQuestionEditor extends React.Component{
             title:'',
             description:'',
             instructions:'',
-            points:'',
-            isTrue:true,
+            points:0,
+            variables:'',
             question:'',
             questionId:0,
             previewMode:true,
-            examId:0
+            examId:0,
+            show:[]
         }
 
-        // this.updateForm = this.updateForm.bind(this);
         this.saveForm = this.saveForm.bind(this);
-
     }
 
     componentDidMount() {
         const {navigation} = this.props;
         const questionId = navigation.getParam("questionId")
         const question=navigation.getParam("question")
-        const examId = navigation.getParam("examId")
+        const examId=navigation.getParam("examId")
 
         this.setState({title:question.title})
         this.setState({instructions:question.instructions})
         this.setState({description:question.description})
-        this.setState({isTrue:question.isTrue})
         this.setState({questionId:questionId})
+        this.setState({variables:question.variables})
         this.setState({points:question.points})
         this.setState({examId:examId})
     }
@@ -53,10 +52,10 @@ class TrueFalseQuestionEditor extends React.Component{
             'description':this.state.description,
             'instructions':this.state.instructions,
             'points':this.state.points,
-            'isTrue':this.state.isTrue,
+            'variables':this.state.variables
         }
-        this.QuestionServiceClient.saveTrueOrFalseQuestion(this.state.questionId,question)
-            .then(()=>this.props.navigation.state.params.refresh(this.state.examId))
+        this.QuestionServiceClient.saveFillInBlankQuestion(this.state.questionId,question)
+              .then(()=>this.props.navigation.state.params.refresh(this.state.examId))
             .then(()=>this.props.navigation.goBack())
     }
 
@@ -64,30 +63,47 @@ class TrueFalseQuestionEditor extends React.Component{
         this.setState({previewMode:!this.state.previewMode})
     }
 
+
+        parseData = (text) => {
+            let show = [];
+            let push = true;
+            for (let i = 0; i < text.length; i++) {
+                if (text.charAt(i) === '[') {
+                    show.push('[]');
+                    push = false;
+                }
+                if (text.charAt(i) === ']') {
+                    push = true;
+                }
+                if (push && text.charAt(i) !== '[' && text.charAt(i) !== ']') {
+                    show.push(text.charAt(i));
+                }
+            }
+            this.setState({show:show});
+    };
+
+
+
     render(){
-          // const questionId = this.props.navigation.getParam("questionId")
-          // const question = this.props.navigation.getParam("question")
+
         return(
 
             <ScrollView>
 
-            <Text h3>Eidtor</Text>
-                <FormLabel>Title</FormLabel>
+                <Text h3>Eidtor</Text>
 
+                <FormLabel>Title</FormLabel>
                 <FormInput
-                     onChangeText={
-                     text => this.updateForm({title: text}) }>
-                     {this.state.title}
+                    onChangeText={
+                        text => this.updateForm({title: text}) }>
+                    {this.state.title}
                 </FormInput>
-                <FormValidationMessage>
-                    Title is required
-                </FormValidationMessage>
 
                 <FormLabel>Description</FormLabel>
                 <FormInput
-                onChangeText={
-                text => this.updateForm({description: text}) }>
-                         {this.state.description}
+                    onChangeText={
+                        text => this.updateForm({description: text}) }>
+                    {this.state.description}
                 </FormInput>
 
                 <FormLabel>Instruction</FormLabel>
@@ -104,10 +120,21 @@ class TrueFalseQuestionEditor extends React.Component{
                     {this.state.points}
                 </FormInput>
 
-                {/*<CheckBox onPress={()=>this.updateForm({isTrue:!this.state.isTrue})}*/}
-                          {/*checked={this.state.isTrue} title='The answer is true'/>*/}
+                <FormLabel>FillInBlank</FormLabel>
+                <FormInput
+                    multiline={true}
+                    onChangeText={
+                        text => this.updateForm({variables: text}) }>
+                    {this.state.variables}
+                </FormInput>
+                <Button    backgroundColor="orange"
+                           color="white"
+                           title="parse"
+                           buttonStyle={{width:100,height:40}}
+                           onPress={()=>this.parseData(this.state.variables)}
+                />
 
-                <Text>  </Text>
+
                 <Button onPress={()=>this.preview()}
                         title="preiew"
                         buttonStyle={{width:100,height:40}}/>
@@ -122,11 +149,21 @@ class TrueFalseQuestionEditor extends React.Component{
                     </View>
                     <Text h5>{this.state.description}</Text>
                     <Text h5>{this.state.instructions}</Text>
-                    {/*<CheckBox*/}
-                        {/*checked={this.state.isTrue} title='The answer is true'/>*/}
-                    <CheckBox onPress={()=>this.updateForm({isTrue:!this.state.isTrue})}
-                              checked={this.state.isTrue} title='The answer is true'/>
-
+                    <View style={{ flexDirection: 'row'}}>
+                        {this.state.show.map((show, index) => {
+                            if (show === '[]') {
+                                return <TextInput
+                                    backgroundColor="white"
+                                    height={30}
+                                    width={70}
+                                    key={index}/>
+                            }
+                            else {
+                                return <Text style={{fontSize: 20}} key={index}>{show}</Text>
+                            }
+                        })
+                        }
+                    </View>
 
                     <Button    backgroundColor="green"
                                color="white"
@@ -140,18 +177,15 @@ class TrueFalseQuestionEditor extends React.Component{
                                onPress={() =>this.props.navigation.navigate('QuestionList')}/>
 
                 </ScrollView>}
-
-            </ScrollView >
-
-
+            </ScrollView>
         )
     }
 }
-export default TrueFalseQuestionEditor
+export default FillInBlankQuestionWidget
+
 
 const styles=StyleSheet.create({
     textContainerarea:{
-        // flexDirection : 'row',
         width:window.width,
         margin: 10,
         padding:5,
@@ -161,9 +195,6 @@ const styles=StyleSheet.create({
     scorearea:{
         flexDirection : 'row',
         width: window.width,
-        // margin: 10,
-        // padding:5,
         justifyContent: 'space-between',
-        //borderWidth:1
     }
 })
