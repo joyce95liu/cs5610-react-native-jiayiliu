@@ -14,7 +14,7 @@ class FillInBlankQuestionWidget extends React.Component{
             title:'',
             description:'',
             instructions:'',
-            points:0,
+            points:'',
             variables:'',
             question:'',
             questionId:0,
@@ -98,6 +98,9 @@ class FillInBlankQuestionWidget extends React.Component{
                         text => this.updateForm({title: text}) }>
                     {this.state.title}
                 </FormInput>
+                <FormValidationMessage>
+                    Title is required
+                </FormValidationMessage>
 
                 <FormLabel>Description</FormLabel>
                 <FormInput
@@ -130,14 +133,25 @@ class FillInBlankQuestionWidget extends React.Component{
                 <Button    backgroundColor="orange"
                            color="white"
                            title="parse"
-                           buttonStyle={{width:100,height:40}}
+                           // buttonStyle={{width:100,height:40}}
                            onPress={()=>this.parseData(this.state.variables)}
                 />
+
+                <Button    backgroundColor="green"
+                           color="white"
+                           title="Save"
+                           onPress={()=>this.saveForm()}
+                />
+
+                <Button    backgroundColor="red"
+                           color="white"
+                           title="Cancel"
+                           onPress={() =>this.props.navigation.navigate('QuestionList')}/>
 
 
                 <Button onPress={()=>this.preview()}
                         title="preiew"
-                        buttonStyle={{width:100,height:40}}/>
+                        buttonStyle={{width:100,height:50}}/>
 
                 {this.state.previewMode&&
                 <ScrollView style={styles. textContainerarea}>
@@ -168,13 +182,11 @@ class FillInBlankQuestionWidget extends React.Component{
                     <Button    backgroundColor="green"
                                color="white"
                                title="Save"
-                               onPress={()=>this.saveForm()}
                     />
 
                     <Button    backgroundColor="red"
                                color="white"
-                               title="Cancel"
-                               onPress={() =>this.props.navigation.navigate('QuestionList')}/>
+                               title="Cancel"/>
 
                 </ScrollView>}
             </ScrollView>

@@ -19,7 +19,8 @@ class TrueFalseQuestionEditor extends React.Component{
             question:'',
             questionId:0,
             previewMode:true,
-            examId:0
+            examId:0,
+            choose:true
         }
 
         // this.updateForm = this.updateForm.bind(this);
@@ -104,13 +105,24 @@ class TrueFalseQuestionEditor extends React.Component{
                     {this.state.points}
                 </FormInput>
 
-                {/*<CheckBox onPress={()=>this.updateForm({isTrue:!this.state.isTrue})}*/}
-                          {/*checked={this.state.isTrue} title='The answer is true'/>*/}
+                <CheckBox onPress={()=>this.updateForm({isTrue:!this.state.isTrue})}
+                          checked={this.state.isTrue} title='The answer is true'/>
+
+                <Button    backgroundColor="green"
+                           color="white"
+                           title="Save"
+                           onPress={()=>this.saveForm()}
+                />
+
+                <Button    backgroundColor="red"
+                           color="white"
+                           title="Cancel"
+                           onPress={() =>this.props.navigation.navigate('QuestionList')}/>
 
                 <Text>  </Text>
                 <Button onPress={()=>this.preview()}
                         title="preiew"
-                        buttonStyle={{width:100,height:40}}/>
+                        buttonStyle={{width:100,height:50}}/>
 
                 {this.state.previewMode&&
                 <ScrollView style={styles. textContainerarea}>
@@ -124,20 +136,20 @@ class TrueFalseQuestionEditor extends React.Component{
                     <Text h5>{this.state.instructions}</Text>
                     {/*<CheckBox*/}
                         {/*checked={this.state.isTrue} title='The answer is true'/>*/}
-                    <CheckBox onPress={()=>this.updateForm({isTrue:!this.state.isTrue})}
-                              checked={this.state.isTrue} title='The answer is true'/>
+                    <CheckBox
+                        onPress={()=>this.updateForm({choose:!this.state.choose})}
+                               checked={this.state.choose}
+                              title='The answer is true'/>
 
 
                     <Button    backgroundColor="green"
                                color="white"
                                title="Save"
-                               onPress={()=>this.saveForm()}
                     />
 
                     <Button    backgroundColor="red"
                                color="white"
-                               title="Cancel"
-                               onPress={() =>this.props.navigation.navigate('QuestionList')}/>
+                               title="Cancel"/>
 
                 </ScrollView>}
 

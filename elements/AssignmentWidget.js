@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {ScrollView, View, Alert, Picker, StyleSheet,TextInput} from 'react-native'
-import {Button,Text, ListItem,FormLabel,FormInput} from 'react-native-elements'
+import {Button,Text, ListItem,FormLabel,FormInput,FormValidationMessage} from 'react-native-elements'
 import QuestionTypePicker from '../elements/QuestionTypePicker'
 import QuestionServiceClient from "../services/QuestionServiceClient";
 import AssignmentServiceClient from "../services/AssignmentServiceClient"
@@ -20,7 +20,8 @@ class AssignmentWidget extends Component {
             file:'',
             link:'',
             previewMode:true,
-            lessonId:0
+            lessonId:0,
+            points:''
 
         }
         this.saveAssignment = this.saveAssignment.bind(this);
@@ -44,7 +45,8 @@ class AssignmentWidget extends Component {
         this.setState({link:assignment.link})
         this.setState({assignmentId:assignmentId})
         this.setState({lessonId:lessonId})
-        this.setState({file:assignment.file})
+        this.setState({file:assignment.file}),
+            this.setState({points:assignment.points})
     }
 
 
@@ -55,6 +57,7 @@ class AssignmentWidget extends Component {
             'file':this.state.file,
             'link':this.state.link,
             'essay':this.state.essay,
+            'points':this.state.points,
         }
         this.AssignmentServiceClient.saveAssignment(this.state.assignmentId,assignment)
             .then(()=>this.props.navigation.state.params.refreshit(this.state.lessonId))
@@ -77,6 +80,9 @@ class AssignmentWidget extends Component {
                         text => this.updateForm({title: text}) }>
                     {this.state.title}
                 </FormInput>
+                <FormValidationMessage>
+                    Title is required
+                </FormValidationMessage>
 
 
                 <FormLabel>Description</FormLabel>
@@ -86,37 +92,57 @@ class AssignmentWidget extends Component {
                     {this.state.description}
                 </FormInput>
 
-                <FormLabel>Essay</FormLabel>
+                <FormLabel>Points</FormLabel>
                 <FormInput
                     onChangeText={
-                        text => this.updateForm({essay: text}) }>
-                    {this.state.essay}
+                        text => this.updateForm({points: text}) }>
+                    {this.state.points}
                 </FormInput>
 
-                <FormLabel>file</FormLabel>
-                <FormInput
-                    onChangeText={
-                        text => this.updateForm({file: text}) }>
-                    {this.state.file}
-                </FormInput>
+                <Button    backgroundColor="green"
+                           color="white"
+                           title="Save"
+                           onPress={()=>this.saveAssignment()}
+                />
 
-                <FormLabel>link</FormLabel>
-                <FormInput
-                    onChangeText={
-                        text => this.updateForm({link: text}) }>
-                    {this.state.link}
-                </FormInput>
+                <Button    backgroundColor="red"
+                           color="white"
+                           title="Cancel"
+                           onPress={() =>this.props.navigation.navigate('WidgetList')}/>
+
+                {/*<FormLabel>Essay</FormLabel>*/}
+                {/*<FormInput*/}
+                    {/*onChangeText={*/}
+                        {/*text => this.updateForm({essay: text}) }>*/}
+                    {/*{this.state.essay}*/}
+                {/*</FormInput>*/}
+
+                {/*<FormLabel>file</FormLabel>*/}
+                {/*<FormInput*/}
+                    {/*onChangeText={*/}
+                        {/*text => this.updateForm({file: text}) }>*/}
+                    {/*{this.state.file}*/}
+                {/*</FormInput>*/}
+
+                {/*<FormLabel>link</FormLabel>*/}
+                {/*<FormInput*/}
+                    {/*onChangeText={*/}
+                        {/*text => this.updateForm({link: text}) }>*/}
+                    {/*{this.state.link}*/}
+                {/*</FormInput>*/}
 
                 <Button onPress={()=>this.preview()}
                         title="preiew"
-                        buttonStyle={{width:100,height:40}}/>
+                        buttonStyle={{width:100,height:50}}/>
 
                 {this.state.previewMode&&
                 <ScrollView style={styles. textContainerarea}>
                     <Text h4>Preview</Text>
 
-
+                    <View style={styles. scorearea}>
                         <Text h5>{this.state.title}</Text>
+                    <Text h5>{this.state.points} points</Text>
+                    </View>
 
                     <Text h5>{this.state.description}</Text>
                     <Text h5>Essay answer</Text>
@@ -151,14 +177,11 @@ class AssignmentWidget extends Component {
 
                     <Button    backgroundColor="green"
                                color="white"
-                               title="Save"
-                               onPress={()=>this.saveAssignment()}
-                    />
+                               title="Save"/>
 
                     <Button    backgroundColor="red"
                                color="white"
-                               title="Cancel"
-                               onPress={() =>this.props.navigation.navigate('Widgets')}/>
+                               title="Cancel"/>
 
                 </ScrollView>}
             </ScrollView>
@@ -188,5 +211,10 @@ const styles=StyleSheet.create({
     essayarea:{
         height: 200,
         borderWidth:1,
-    }
+    },
+    scorearea:{
+        flexDirection : 'row',
+        width: window.width,
+        justifyContent: 'space-between',
+    },
 })

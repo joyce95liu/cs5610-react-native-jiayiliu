@@ -14,7 +14,7 @@ class EssayQuestionWidget extends React.Component{
             title:'',
             description:'',
             instructions:'',
-            points:0,
+            points:'',
             text:'',
             question:'',
             questionId:0,
@@ -77,6 +77,9 @@ class EssayQuestionWidget extends React.Component{
                         text => this.updateForm({title: text}) }>
                     {this.state.title}
                 </FormInput>
+                <FormValidationMessage>
+                    Title is required
+                </FormValidationMessage>
 
                 <FormLabel>Description</FormLabel>
                 <FormInput
@@ -99,9 +102,20 @@ class EssayQuestionWidget extends React.Component{
                     {this.state.points}
                 </FormInput>
 
+                <Button    backgroundColor="green"
+                           color="white"
+                           title="Save"
+                           onPress={()=>this.saveForm()}
+                />
+
+                <Button    backgroundColor="red"
+                           color="white"
+                           title="Cancel"
+                           onPress={() =>this.props.navigation.navigate('QuestionList')}/>
+
                 <Button onPress={()=>this.preview()}
                         title="preiew"
-                        buttonStyle={{width:100,height:40}}/>
+                        buttonStyle={{width:100,height:50}}/>
 
                 {this.state.previewMode&&
                 <ScrollView style={styles. textContainerarea}>
@@ -124,13 +138,11 @@ class EssayQuestionWidget extends React.Component{
                     <Button    backgroundColor="green"
                                color="white"
                                title="Save"
-                               onPress={()=>this.saveForm()}
                     />
 
                     <Button    backgroundColor="red"
                                color="white"
-                               title="Cancel"
-                               onPress={() =>this.props.navigation.navigate('QuestionList')}/>
+                               title="Cancel"/>
 
                 </ScrollView>}
 

@@ -20,7 +20,8 @@ class MultipleChoiceQuestionWidget extends React.Component{
             correctoption:'',
             questionId:0,
             previewMode:true,
-            examId:0
+            examId:0,
+            chooseoption:''
         }
 
         this.saveForm = this.saveForm.bind(this);
@@ -82,6 +83,9 @@ class MultipleChoiceQuestionWidget extends React.Component{
                         text => this.updateForm({title: text}) }>
                     {this.state.title}
                 </FormInput>
+                <FormValidationMessage>
+                    Title is required
+                </FormValidationMessage>
 
                 <FormLabel>Description</FormLabel>
                 <FormInput
@@ -115,11 +119,26 @@ class MultipleChoiceQuestionWidget extends React.Component{
                 {/*color="white"*/}
                 {/*title="Add option"*/}
                 {/*onPress={()=>this.addoption()}/>*/}
+                <Button    backgroundColor="green"
+                           color="white"
+                           title="Save"
+                           onPress={()=>this.saveForm()}
+                />
+
+                <Button    backgroundColor="red"
+                           color="white"
+                           title="Cancel"
+                           onPress={() =>this.props.navigation.navigate('QuestionList')}/>
+
+                {this.state.options.split('\n').map(
+                    (item,index)=>(<CheckBox title={item} key={index}
+                                             checked = {index==this.state.correctoption}
+                                             onPress={()=>this.setState({correctoption:index})}/>))}
 
                 <Text>  </Text>
                 <Button onPress={()=>this.preview()}
                         title="preiew"
-                        buttonStyle={{width:100,height:40}}/>
+                        buttonStyle={{width:100,height:50}}/>
 
                 {this.state.previewMode&&
                 <ScrollView style={styles. textContainerarea}>
@@ -135,19 +154,20 @@ class MultipleChoiceQuestionWidget extends React.Component{
 
                     {this.state.options.split('\n').map(
                         (item,index)=>(<CheckBox title={item} key={index}
-                                                 checked = {index==this.state.correctoption}
-                                                 onPress={()=>this.setState({correctoption:index})}/>))}
+                                                 checked = {index==this.state.chooseoption}
+                                                 onPress={()=>this.setState({chooseoption:index})}
+                                                 />))}
 
                     <Button    backgroundColor="green"
                                color="white"
                                title="Save"
-                               onPress={()=>this.saveForm()}
+
                     />
 
                     <Button    backgroundColor="red"
                                color="white"
                                title="Cancel"
-                               onPress={() =>this.props.navigation.navigate('QuestionList')}/>
+                              />
 
                 </ScrollView>}
 

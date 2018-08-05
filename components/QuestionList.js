@@ -148,14 +148,14 @@ class QuestionList extends Component {
                 <Button    backgroundColor="green"
                            color="white"
                            title="Save"
-                           buttonStyle={{height:39}}
+                           buttonStyle={{height:50}}
                            onPress={()=>this.saveExam()}
                 />
                 
                 <Button    backgroundColor="blue"
                            color="white"
                            title="create"
-                           buttonStyle={{height:39}}
+                           buttonStyle={{height:50}}
                            onPress={()=>this.createquestion()}/>
 
                 <Picker
