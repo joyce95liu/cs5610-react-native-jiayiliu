@@ -6,7 +6,7 @@ class CourseList extends Component {
   static navigationOptions = {title: 'Courses'}
   constructor(props) {
     super(props)
-    fetch('https://webdev-summer-assignment.herokuapp.com/api/course')
+    fetch('https://salty-spire-76406.herokuapp.com/api/course')
       .then(response => (response.json()))
       .then(courses => {
         this.setState({courses: courses})

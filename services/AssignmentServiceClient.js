@@ -11,7 +11,7 @@ class AssignmentServiceClient {
 
 
     createAssignment(lessonId,assignment) {
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/lesson/'+lessonId+'/assignment', {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/lesson/'+lessonId+'/assignment', {
             body: JSON.stringify(assignment),
             headers: {
                 'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ class AssignmentServiceClient {
         })}
 
     saveAssignment(assignmentId,assignment){
-    return fetch('https://webdev-summer-assignment.herokuapp.com/api/assignment/'+assignmentId, {
+    return fetch('https://salty-spire-76406.herokuapp.com/api/assignment/'+assignmentId, {
     body: JSON.stringify(assignment),
     headers: {
         'Content-Type': 'application/json'

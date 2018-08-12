@@ -1,6 +1,6 @@
 let _singleton = Symbol();
 
-const TrueOrFalseQuestion_API_URL = 'https://webdev-summer-assignment.herokuapp.com/api/inheritance/joined/true';
+const TrueOrFalseQuestion_API_URL = 'https://salty-spire-76406.herokuapp.com/api/inheritance/joined/true';
 
 class QuestionServiceClient {
     constructor(singletonToken) {
@@ -9,14 +9,14 @@ class QuestionServiceClient {
     }
 
     findAllQuestionForExam(examId){
-        return fetch("https://webdev-summer-assignment.herokuapp.com/api/exam/"+examId+"/question")
+        return fetch("https://salty-spire-76406.herokuapp.com/api/exam/"+examId+"/question")
             .then(function(response) {
                 return response.json();
             })
     }
 
     createTrueOrFalseQuestion(examId,question) {
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/exam/'+examId+'/inheritance/joined/true', {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/exam/'+examId+'/inheritance/joined/true', {
              body: JSON.stringify(question),
             headers: {
                 'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ class QuestionServiceClient {
     }
 
     createMultipleChoiceQuestion(examId,question) {
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/exam/'+examId+'/inheritance/joined/multi', {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/exam/'+examId+'/inheritance/joined/multi', {
             body: JSON.stringify(question),
             headers: {
                 'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ class QuestionServiceClient {
 
 
     saveMultipleChoiceQuestion(questionId,question){
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/inheritance/joined/multi'+'/'+questionId, {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/inheritance/joined/multi'+'/'+questionId, {
             body: JSON.stringify(question),
             headers: {
                 'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ class QuestionServiceClient {
     }
 
     createEssayQuestion(examId,question) {
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/exam/'+examId+'/inheritance/joined/essay', {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/exam/'+examId+'/inheritance/joined/essay', {
             body: JSON.stringify(question),
             headers: {
                 'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ class QuestionServiceClient {
         })}
 
     saveEssayQuestion(questionId,question){
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/inheritance/joined/essay'+'/'+questionId, {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/inheritance/joined/essay'+'/'+questionId, {
             body: JSON.stringify(question),
             headers: {
                 'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ class QuestionServiceClient {
     }
 
     createFillInBlankQuestion(examId,question) {
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/exam/'+examId+'/inheritance/joined/fill', {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/exam/'+examId+'/inheritance/joined/fill', {
             body: JSON.stringify(question),
             headers: {
                 'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ class QuestionServiceClient {
         })}
 
     saveFillInBlankQuestion(questionId,question){
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/inheritance/joined/fill'+'/'+questionId, {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/inheritance/joined/fill'+'/'+questionId, {
             body: JSON.stringify(question),
             headers: {
                 'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ class QuestionServiceClient {
     }
 
     deletequestion(questionId){
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/question/'+questionId, {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/question/'+questionId, {
             method: 'DELETE'
            }).then(function (response) {
             return response;

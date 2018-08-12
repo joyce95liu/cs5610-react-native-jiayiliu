@@ -10,14 +10,14 @@ class LessonServiceClient {
     }
 
     findAllWidgetForLesson(lessonId){
-        return fetch("https://webdev-summer-assignment.herokuapp.com/api/lesson/"+lessonId+"/widgets")
+        return fetch("https://salty-spire-76406.herokuapp.com/api/lesson/"+lessonId+"/widgets")
             .then(function(response) {
                 return response.json();
             })
     }
 
     deletewidget(widgetId){
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/widget/'+widgetId, {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/widget/'+widgetId, {
             method: 'DELETE'
         }).then(function (response) {
             return response;

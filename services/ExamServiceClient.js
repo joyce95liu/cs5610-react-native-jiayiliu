@@ -1,6 +1,6 @@
 let _singleton = Symbol();
 
-const TrueOrFalseQuestion_API_URL = 'https://webdev-summer-assignment.herokuapp.com/api/inheritance/joined/true';
+const TrueOrFalseQuestion_API_URL = 'https://salty-spire-76406.herokuapp.com/api/inheritance/joined/true';
 
 class ExamServiceClient {
     constructor(singletonToken) {
@@ -11,7 +11,7 @@ class ExamServiceClient {
 
 
     createExam(lessonId,exam) {
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/lesson/'+lessonId, {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/lesson/'+lessonId, {
             body: JSON.stringify(exam),
             headers: {
                 'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ class ExamServiceClient {
         })}
 
     saveExam(examId,exam){
-        return fetch('https://webdev-summer-assignment.herokuapp.com/api/exam/'+examId, {
+        return fetch('https://salty-spire-76406.herokuapp.com/api/exam/'+examId, {
             body: JSON.stringify(exam),
             headers: {
                 'Content-Type': 'application/json'
